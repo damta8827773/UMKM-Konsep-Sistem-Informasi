@@ -1,0 +1,40 @@
+rules_version = '2';
+
+// ─────────────────────────────────────────────────────────────
+//  THE REAL SECURITY BOUNDARY.
+//  Client-side checks are only for UX — these rules are what
+//  actually stop anyone who is not the admin from writing data.
+//
+//  Deploy:  firebase deploy --only firestore:rules
+// ─────────────────────────────────────────────────────────────
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email == 'damtafaiz@gmail.com'
+        && request.auth.token.email_verified == true;
+    }
+
+    // Products: anyone can browse the storefront; only admin mutates stock.
+    match /products/{productId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // Orders: a buyer may CREATE an order (dummy checkout), but cannot read
+    // others' orders or change them. Only admin reads / processes orders.
+    match /orders/{orderId} {
+      allow create: if request.resource.data.keys().hasAll(['items', 'total', 'status', 'createdAt'])
+                    && request.resource.data.total is number
+                    && request.resource.data.total >= 0
+                    && request.resource.data.status == 'baru';
+      allow read, update, delete: if isAdmin();
+    }
+
+    // Default deny everything else.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

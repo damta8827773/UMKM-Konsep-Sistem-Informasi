@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design tokens. The only stylesheet in the project — all component styling is
+   done with Tailwind utility classes in .tsx files. */
+@layer base {
+  :root {
+    --bg: 222 40% 97%;
+    --surface: 0 0% 100%;
+    --surface-2: 222 35% 98%;
+    --border: 222 24% 92%;
+    --track: 222 24% 94%;
+    --text: 230 35% 16%;
+    --muted: 220 9% 46%;
+    --faint: 222 16% 64%;
+    --brand: 244 75% 59%;
+    --brand-soft: 244 90% 96%;
+    --danger: 358 75% 59%;
+    --danger-soft: 358 85% 96%;
+    --warn: 32 95% 44%;
+    --warn-soft: 38 92% 94%;
+    --safe: 152 51% 39%;
+    --safe-soft: 150 55% 93%;
+  }
+  .dark {
+    --bg: 222 30% 8%;
+    --surface: 224 22% 12%;
+    --surface-2: 223 20% 15%;
+    --border: 223 18% 20%;
+    --track: 223 18% 18%;
+    --text: 220 30% 92%;
+    --muted: 220 12% 64%;
+    --faint: 222 12% 48%;
+    --brand: 244 90% 76%;
+    --brand-soft: 244 35% 22%;
+    --danger: 358 80% 68%;
+    --danger-soft: 358 40% 16%;
+    --warn: 36 85% 65%;
+    --warn-soft: 36 40% 15%;
+    --safe: 152 45% 52%;
+    --safe-soft: 152 35% 13%;
+  }
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-bg text-text antialiased;
+    font-feature-settings: "cv11", "ss01";
+  }
+}
+
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 999px;
+}

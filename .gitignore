@@ -1,0 +1,20 @@
+# dependencies
+node_modules/
+
+# next
+.next/
+out/
+
+# env — NEVER commit real keys
+.env
+.env.local
+.env*.local
+
+# firebase admin / service accounts
+*serviceAccount*.json
+
+# misc
+.DS_Store
+*.log
+npm-debug.log*
+next-env.d.ts
