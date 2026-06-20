@@ -1,28 +1,67 @@
 import type { Product } from "@/common/types";
 
-// Keyword per category → a real free photo (LoremFlickr, no API key needed).
-const CATEGORY_KEYWORD: Record<string, string> = {
-  Sembako: "rice,grocery",
-  "Makanan Instan": "instant,noodle",
-  Minuman: "drink,beverage",
-  Bumbu: "spice,sauce",
-  "Kebutuhan Rumah": "soap,household",
-};
+// Map a product NAME to a SPECIFIC emoji so the visual always matches the item
+// (never random). First match wins; order matters (specific before generic).
+const ITEM_EMOJI: [RegExp, string][] = [
+  [/beras/i, "🍚"],
+  [/gula/i, "🍬"],
+  [/minyak/i, "🛢️"],
+  [/tepung/i, "🌾"],
+  [/telur/i, "🥚"],
+  [/garam/i, "🧂"],
+  [/margarin|mentega/i, "🧈"],
+  [/mie|^mi /i, "🍜"],
+  [/bubur/i, "🥣"],
+  [/sarden|sardine/i, "🐟"],
+  [/kornet/i, "🥫"],
+  [/nugget/i, "🍗"],
+  [/sosis/i, "🌭"],
+  [/bakso/i, "🍡"],
+  [/kopi/i, "☕"],
+  [/teh/i, "🍵"],
+  [/susu/i, "🥛"],
+  [/sirup/i, "🧃"],
+  [/air mineral/i, "💧"],
+  [/soda/i, "🥤"],
+  [/energi/i, "⚡"],
+  [/kecap/i, "🫗"],
+  [/saus sambal|sambal/i, "🌶️"],
+  [/saus tomat/i, "🍅"],
+  [/penyedap|kaldu/i, "🧂"],
+  [/lada/i, "🧂"],
+  [/cuka/i, "🧴"],
+  [/sabun/i, "🧼"],
+  [/sampo/i, "🧴"],
+  [/pasta gigi/i, "🪥"],
+  [/deterjen/i, "🧺"],
+  [/pewangi/i, "🧴"],
+  [/pembersih/i, "🧽"],
+  [/tisu/i, "🧻"],
+  [/keripik/i, "🥔"],
+  [/biskuit/i, "🍪"],
+  [/wafer/i, "🧇"],
+  [/cokelat|coklat/i, "🍫"],
+  [/permen/i, "🍬"],
+  [/kacang/i, "🥜"],
+  [/keju/i, "🧀"],
+  [/jelly/i, "🍮"],
+  [/korek/i, "🔥"],
+  [/baterai/i, "🔋"],
+  [/obat nyamuk/i, "🦟"],
+  [/buku/i, "📓"],
+  [/pulpen/i, "🖊️"],
+  [/plastik/i, "🛍️"],
+  [/lampu/i, "💡"],
+];
 
-// Stable per-product seed so each item keeps the same photo across reloads.
-function hash(s: string): number {
-  const str = s || "x";
-  let h = 0;
-  for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0;
-  return Math.abs(h);
+/** Specific emoji for a product name, falling back to the category emoji. */
+export function itemEmoji(name?: string, fallback = "📦"): string {
+  const n = (name ?? "").toLowerCase();
+  for (const [re, e] of ITEM_EMOJI) if (re.test(n)) return e;
+  return fallback;
 }
 
-/**
- * Resolve a product's display photo:
- * 1) admin-set `image` URL  →  2) a real category photo  →  (emoji fallback in UI).
- */
-export function productImage(p: Partial<Pick<Product, "image" | "category" | "sku">>): string {
-  if (p?.image && p.image.trim()) return p.image.trim();
-  const kw = CATEGORY_KEYWORD[p?.category ?? ""] ?? "grocery,food";
-  return `https://loremflickr.com/400/400/${encodeURIComponent(kw)}?lock=${hash(p?.sku ?? "")}`;
+/** Real photo URL only when an admin set one; otherwise the UI shows the icon tile. */
+export function productImage(p: Partial<Pick<Product, "image">>): string {
+  return p?.image && p.image.trim() ? p.image.trim() : "";
 }

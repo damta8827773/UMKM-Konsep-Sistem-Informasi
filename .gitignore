@@ -18,3 +18,6 @@ out/
 *.log
 npm-debug.log*
 next-env.d.ts
+
+# local agent notes — keep out of the repo
+CLAUDE.md

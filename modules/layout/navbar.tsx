@@ -17,12 +17,11 @@ export function Navbar() {
   const { t } = useI18n();
   const pathname = usePathname();
 
-  // Admin link is ALWAYS visible so the login is discoverable. Clicking it when
-  // not signed in shows the login card (AdminGuard); Firestore Rules remain the
-  // real gate, so exposing the link is safe.
+  // Storefront-first navbar: the Admin link only appears once signed in as admin.
+  // For everyone else the top nav stays clean; admin login lives in the footer.
   const links = [
     { href: "/", label: t("nav.store"), icon: Store },
-    { href: "/admin", label: t("nav.admin"), icon: LayoutDashboard },
+    ...(isAdmin ? [{ href: "/admin", label: t("nav.admin"), icon: LayoutDashboard }] : []),
   ];
 
   return (

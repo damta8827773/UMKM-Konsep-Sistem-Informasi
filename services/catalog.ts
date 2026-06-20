@@ -76,37 +76,45 @@ function prng(seed: number): number {
   return s / 2147483647;
 }
 
-/** Generate up to `count` UMKM products (default 1000). */
-export function generateCatalog(count = 1000): Omit<Product, "id">[] {
-  const out: Omit<Product, "id">[] = [];
-  let round = 0;
-  while (out.length < count) {
-    for (const cat of CATEGORIES) {
-      if (out.length >= count) break;
-      const i = out.length;
-      const item = cat.items[round % cat.items.length];
-      const brand = cat.brands[(round * 3 + 1) % cat.brands.length];
-      const size = cat.sizes[(round * 2) % cat.sizes.length];
-      const sup = SUPPLIERS[i % SUPPLIERS.length];
+type Combo = { cat: Cat; item: string; brand: string; size: Size };
 
-      const price = Math.max(1000, Math.round((cat.basePrice * size.mult * (0.85 + prng(i) * 0.5)) / 500) * 500);
-      const weeklySold = Math.floor(prng(i + 1) * 350) + 3;
-      out.push({
-        name: `${item} ${brand} ${size.label}`,
-        sku: `UMKM-${String(i + 1).padStart(4, "0")}`,
-        emoji: cat.emoji,
-        category: cat.name,
-        stock: Math.floor(prng(i + 2) * 80),
-        reorderPoint: 10 + Math.floor(prng(i + 3) * 12),
-        unit: cat.unit,
-        price,
-        weeklySold,
-        monthlySold: weeklySold * 4 + Math.floor(prng(i + 4) * 40),
-        supplier: sup.name,
-        supplierColor: sup.color,
-      });
+/** Generate up to `count` UNIQUE UMKM products (default 1000). No duplicate names. */
+export function generateCatalog(count = 1000): Omit<Product, "id">[] {
+  // 1) Build every unique (item × brand × size) combo per category.
+  const groups: Combo[][] = CATEGORIES.map((cat) => {
+    const list: Combo[] = [];
+    for (const item of cat.items) for (const brand of cat.brands) for (const size of cat.sizes) list.push({ cat, item, brand, size });
+    return list;
+  });
+
+  // 2) Interleave categories so the catalog is varied (not all Sembako first).
+  const combos: Combo[] = [];
+  const maxLen = Math.max(...groups.map((g) => g.length));
+  for (let col = 0; col < maxLen && combos.length < count; col++) {
+    for (const g of groups) {
+      if (g[col]) combos.push(g[col]);
+      if (combos.length >= count) break;
     }
-    round++;
   }
-  return out;
+
+  // 3) Materialise — each combo is unique, so every name/sku is unique.
+  return combos.map((c, i) => {
+    const price = Math.max(1000, Math.round((c.cat.basePrice * c.size.mult * (0.85 + prng(i) * 0.5)) / 500) * 500);
+    const weeklySold = Math.floor(prng(i + 1) * 350) + 3;
+    const sup = SUPPLIERS[i % SUPPLIERS.length];
+    return {
+      name: `${c.item} ${c.brand} ${c.size.label}`,
+      sku: `UMKM-${String(i + 1).padStart(4, "0")}`,
+      emoji: c.cat.emoji,
+      category: c.cat.name,
+      stock: Math.floor(prng(i + 2) * 80),
+      reorderPoint: 10 + Math.floor(prng(i + 3) * 12),
+      unit: c.cat.unit,
+      price,
+      weeklySold,
+      monthlySold: weeklySold * 4 + Math.floor(prng(i + 4) * 40),
+      supplier: sup.name,
+      supplierColor: sup.color,
+    };
+  });
 }

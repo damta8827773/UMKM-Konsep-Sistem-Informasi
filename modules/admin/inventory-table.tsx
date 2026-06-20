@@ -1,11 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Search, Minus, Plus, Trash2, Sparkles } from "lucide-react";
+import { Search, Minus, Plus, Trash2, Sparkles, Eraser } from "lucide-react";
 import { toast } from "sonner";
 import type { Product } from "@/common/types";
 import { deriveStatus } from "@/services/metrics";
-import { updateStock, deleteProduct, seedProducts } from "@/services/products";
+import { updateStock, deleteProduct, seedProducts, clearAllProducts } from "@/services/products";
 import { useI18n } from "@/i18n/provider";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/common/components/ui/card";
 import { Badge } from "@/common/components/ui/badge";
@@ -16,6 +16,7 @@ export function InventoryTable({ products }: { products: Product[] }) {
   const [search, setSearch] = useState("");
   const [busyId, setBusyId] = useState<string | null>(null);
   const [seeding, setSeeding] = useState(false);
+  const [clearing, setClearing] = useState(false);
 
   const ROW_CAP = 80;
   const allRows = useMemo(() => {
@@ -39,12 +40,26 @@ export function InventoryTable({ products }: { products: Product[] }) {
   async function handleSeed() {
     setSeeding(true);
     try {
-      const n = await seedProducts();
-      toast[n > 0 ? "success" : "info"](n > 0 ? `${n} ${t("admin.seedDone")}` : t("admin.seedExists"));
+      // append:true → "Tambah semua" works even when products already exist.
+      const n = await seedProducts(1000, { append: true });
+      toast.success(`${n} ${t("admin.seedDone")}`);
     } catch (e) {
       toast.error(t("common.fail"), { description: e instanceof Error ? e.message : "" });
     } finally {
       setSeeding(false);
+    }
+  }
+
+  async function handleClear() {
+    if (!window.confirm(t("admin.clearConfirm"))) return;
+    setClearing(true);
+    try {
+      const n = await clearAllProducts();
+      toast.success(`${n} ${t("admin.cleared")}`);
+    } catch (e) {
+      toast.error(t("common.fail"), { description: e instanceof Error ? e.message : "" });
+    } finally {
+      setClearing(false);
     }
   }
 
@@ -60,9 +75,12 @@ export function InventoryTable({ products }: { products: Product[] }) {
             <Search className="h-[15px] w-[15px] text-faint" />
             <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t("admin.search")} className="w-28 bg-transparent text-[13px] outline-none placeholder:text-faint sm:w-40" />
           </div>
-          {products.length === 0 && (
-            <Button size="sm" onClick={handleSeed} disabled={seeding}>
-              <Sparkles className="h-3.5 w-3.5" /> {seeding ? t("admin.seeding") : t("admin.seed")}
+          <Button size="sm" onClick={handleSeed} disabled={seeding}>
+            <Sparkles className="h-3.5 w-3.5" /> {seeding ? t("admin.seeding") : t("admin.seedAll")}
+          </Button>
+          {products.length > 0 && (
+            <Button size="sm" variant="outline" onClick={handleClear} disabled={clearing}>
+              <Eraser className="h-3.5 w-3.5" /> {clearing ? t("admin.clearing") : t("admin.clearAll")}
             </Button>
           )}
         </div>

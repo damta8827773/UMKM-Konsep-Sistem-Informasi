@@ -6,6 +6,7 @@ import { I18nProvider } from "@/i18n/provider";
 import { AuthProvider } from "@/contexts/auth-context";
 import { CartProvider } from "@/contexts/cart-context";
 import { Navbar } from "@/modules/layout/navbar";
+import { Footer } from "@/modules/layout/footer";
 import { METADATA } from "@/common/constants/metadata";
 import "./globals.css";
 
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <CartProvider>
                 <Navbar />
                 <main className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 sm:py-8">{children}</main>
+                <Footer />
                 <Toaster richColors position="bottom-right" />
               </CartProvider>
             </AuthProvider>

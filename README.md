@@ -1,86 +1,122 @@
-# 🛒 Warung Analytics — Storefront + Admin (Next.js + Firebase)
+<div align="center">
 
-A single full-stack Next.js app for a grocery store ("Warung Kelontong"):
+# 🛒 Warung Analytics
 
-- **Buyer side** — public storefront: browse products, adjust quantity, cart, and a
-  **dummy checkout** (prototype — no real money).
-- **Admin side** — Google login **restricted to one email**; manage stock (+/−), process
-  orders (auto-deducts stock), and a BI dashboard (KPIs, turnover, supplier spend).
+**Storefront + Admin Inventory System for a grocery store ("Warung Kelontong")**
 
-Data & auth run on **Firebase** (Firestore + Auth). No hand-written `.html`/`.js`/`.css`
-pages — everything is `.ts`/`.tsx` + Tailwind. The only `.css` is `app/globals.css`
-(design tokens), the conventional Tailwind entry.
+A single full-stack **Next.js 14** app with a **Firebase** backend — a public buyer
+storefront and an email-gated admin dashboard for inventory, orders & analytics.
 
----
+![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=nextdotjs)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase-Firestore%20%2B%20Auth-ffca28?logo=firebase&logoColor=black)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-38bdf8?logo=tailwindcss&logoColor=white)
+![License](https://img.shields.io/badge/license-MIT-green)
 
-## 🔐 SECURITY — read first
-
-1. **Rotate the keys you shared in chat.** The Firebase + Gemini keys posted earlier are
-   considered burned. Regenerate them (Firebase Console / Google AI Studio) before use.
-2. Keys live **only in `.env.local`** (gitignored). Nothing is hardcoded in source.
-3. The real access control is **`firestore.rules`** — not the client. Only
-   `damtafaiz@gmail.com` can write products/read orders. Deploy it:
-   ```bash
-   firebase deploy --only firestore:rules
-   ```
-4. Firebase web `apiKey` is safe to be public (security = rules). The **Gemini** key is
-   server-only — never prefix it with `NEXT_PUBLIC_`.
+</div>
 
 ---
 
-## 🏗️ Structure (damtaweb-style, single app)
+## ✨ Features
+
+### 🏪 Buyer (storefront — public)
+- Browse a catalog of up to **1.000 UMKM products** with category-matching icons
+- **Search** + **category filter** + **pagination** (load more)
+- **Quantity stepper**, persistent **cart** (localStorage)
+- **Dummy checkout** (QRIS / transfer / COD) — prototype only, no real money
+
+### 🛠️ Admin (email-gated dashboard)
+- Google sign-in restricted to **one allowed email** (everyone else is blocked)
+- **KPI cards** (asset value, revenue, new orders, stockouts) with animated counters
+- **Recharts**: product turnover (fast vs slow) + supplier spend donut
+- **Stock management** — adjust stock ±, delete, **add 1.000 sample products**, clear all
+- **Order processing** — mark an order done → stock deducts automatically
+
+### 🌐 Platform
+- **Light / dark** theme · **i18n** (Indonesian + English, scalable to 25 locales)
+- Clean **shadcn-style** UI components · responsive, no overflow
+- **Firestore Security Rules** as the real authorization boundary
+
+---
+
+## 🧰 Tech stack
+
+| Layer        | Technology                                             |
+|--------------|--------------------------------------------------------|
+| Framework    | Next.js 14 (App Router) · React 18 · TypeScript         |
+| Styling      | Tailwind CSS · CSS variables (design tokens)            |
+| Backend      | Firebase **Firestore** (data) + **Auth** (Google login) |
+| Charts       | Recharts                                                |
+| UX           | next-themes · Sonner (toasts) · lucide-react icons      |
+
+---
+
+## 📁 Project structure
 
 ```
-sj/
-├── app/                     # routes (App Router)
-│   ├── page.tsx             # storefront (buyer home)
-│   ├── cart/ · checkout/    # buyer cart + dummy checkout
-│   └── admin/               # admin dashboard + login (guarded)
-├── modules/                 # feature UIs
-│   ├── layout/  storefront/  cart/  checkout/  auth/  admin/
-├── services/                # data layer
-│   ├── firebase/            # client init + auth
-│   ├── products.ts orders.ts metrics.ts seed-data.ts
-├── contexts/                # auth + cart providers
-├── hooks/                   # use-products, use-orders
-├── common/                  # ui primitives, libs, types, constants
-├── middleware.ts            # edge headers (/admin)
-└── firestore.rules          # the real security boundary
+.
+├── app/                  # routes (App Router): storefront, /cart, /checkout, /admin
+├── common/               # UI primitives, libs, types, constants
+├── contexts/             # Auth & Cart providers
+├── hooks/                # useProducts, useOrders
+├── i18n/                 # locale config + provider (t())
+├── messages/             # id.ts (source of truth) + en.ts
+├── modules/              # feature widgets (storefront, cart, checkout, admin, layout, auth)
+├── services/             # firebase client, products, orders, metrics, catalog generator
+├── middleware.ts         # security headers / admin matcher
+└── firestore.rules       # authorization boundary (deploy to Firebase)
 ```
 
 ---
 
-## 🚀 Run
+## 🚀 Getting started (local)
+
+> Requires **Node.js 18+**.
 
 ```bash
+# 1. install dependencies
 npm install
-cp .env.local.example .env.local      # fill with your ROTATED Firebase keys
-npm run dev                           # http://localhost:3000
+
+# 2. configure environment
+cp .env.local.example .env.local
+#    then fill the NEXT_PUBLIC_FIREBASE_* values from your Firebase project
+
+# 3. run the dev server
+npm run dev
 ```
 
-In Firebase Console: enable **Authentication → Google**, create a **Firestore** database,
-and deploy `firestore.rules`. Then open the app, go to **/admin**, log in with the admin
-Google account, and click **“Isi produk contoh”** to seed the catalog.
+Open **http://localhost:3000**.
+
+### 🔥 Firebase setup (one-time)
+In the [Firebase Console](https://console.firebase.google.com) for your project:
+1. **Authentication → Sign-in method →** enable **Google**.
+2. **Firestore Database →** create a database (production mode).
+3. **Firestore → Rules →** paste the contents of [`firestore.rules`](./firestore.rules) and **Publish**.
+4. In the app: open **Admin** (footer link) → sign in with the allowed email →
+   **“Tambah semua (1000)”** to seed the catalog.
+
+> The admin email is set via `NEXT_PUBLIC_ADMIN_EMAIL` and enforced by the rules.
 
 ---
 
-## 🔄 How the flows work
-
-**Buyer:** storefront → adjust qty → add to cart (saved in localStorage) → cart page
-(+/−, remove) → checkout (pick dummy payment) → an **order** is written to Firestore
-with status `baru`.
-
-**Admin:** dashboard shows live KPIs + orders. Pressing **“Proses”** on an order deducts
-each item’s stock (admin-only write) and marks it `selesai`. Stock is **never** mutated by
-buyers — that’s enforced by Firestore Rules, so there’s no way to tamper with inventory
-from the storefront.
+## 🔐 Security notes
+- **No secrets in source** — all config comes from `.env.local` (gitignored).
+- `NEXT_PUBLIC_FIREBASE_*` values are safe to expose; **Firestore Rules** are the real gate.
+- Any **server-only** key (e.g. Gemini) must **not** use the `NEXT_PUBLIC_` prefix.
+- Client-side admin checks are UX only — `firestore.rules` is authoritative.
 
 ---
 
-## 🧰 Stack
-Next.js 14 · React 18 · TypeScript · Tailwind · Recharts · Firebase (Firestore + Auth) ·
-shadcn-style primitives · Sonner · next-themes.
+## 📜 Scripts
 
-> **Gemini / Nano Banana note:** UI here is built as real React components, not generated
-> images — buttons must be clickable, responsive, and themeable. An AI-generated image
-> navbar would be non-functional, which this project explicitly avoids.
+| Command          | Description                          |
+|------------------|--------------------------------------|
+| `npm run dev`    | Start the dev server (port 3000)     |
+| `npm run build`  | Production build                     |
+| `npm run start`  | Run the production build             |
+| `npm run lint`   | Lint                                 |
+
+---
+
+## 📄 License
+MIT © Damta Noviyan Muhamad Faiz

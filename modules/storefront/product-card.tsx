@@ -12,7 +12,7 @@ import { useCart } from "@/contexts/cart-context";
 import { useI18n } from "@/i18n/provider";
 import { deriveStatus } from "@/services/metrics";
 import { formatRupiah } from "@/common/libs/utils";
-import { productImage } from "@/common/libs/product-image";
+import { productImage, itemEmoji } from "@/common/libs/product-image";
 
 export function ProductCard({ product }: { product: Product }) {
   const { add } = useCart();
@@ -21,6 +21,8 @@ export function ProductCard({ product }: { product: Product }) {
   const [imgError, setImgError] = useState(false);
   const status = deriveStatus(product.stock, product.reorderPoint);
   const soldOut = product.stock === 0;
+  const photo = productImage(product); // real photo URL only if admin set one
+  const icon = itemEmoji(product.name, product.emoji); // always matches the item
 
   function handleAdd() {
     add(product, qty);
@@ -30,22 +32,22 @@ export function ProductCard({ product }: { product: Product }) {
 
   return (
     <Card className="flex flex-col p-4 animate-fade-up">
-      <div className="relative mb-3 h-32 overflow-hidden rounded-lg bg-surface-2">
-        {imgError ? (
-          <div className="grid h-full place-items-center text-5xl">{product.emoji}</div>
-        ) : (
+      <div className="relative mb-3 h-32 overflow-hidden rounded-lg">
+        {photo && !imgError ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={productImage(product)}
+            src={photo}
             alt={product.name}
             loading="lazy"
             onError={() => setImgError(true)}
             className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
           />
+        ) : (
+          // Clean designed tile — emoji always matches the product name.
+          <div className="grid h-full place-items-center bg-gradient-to-br from-surface-2 to-brand-soft/50">
+            <span className="text-6xl drop-shadow-sm">{icon}</span>
+          </div>
         )}
-        <span className="absolute left-2 top-2 grid h-7 w-7 place-items-center rounded-md bg-surface/80 text-base backdrop-blur">
-          {product.emoji}
-        </span>
       </div>
 
       <div className="mb-1 flex items-start justify-between gap-2">

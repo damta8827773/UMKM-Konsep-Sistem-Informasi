@@ -65,9 +65,11 @@ export async function addProduct(p: Omit<Product, "id">) {
  * Writes in chunks because a Firestore batch is capped at 500 ops.
  * No-op if products already exist.
  */
-export async function seedProducts(count = 1000): Promise<number> {
-  const existing = await getDocs(col);
-  if (!existing.empty) return 0;
+export async function seedProducts(count = 1000, opts?: { append?: boolean }): Promise<number> {
+  if (!opts?.append) {
+    const existing = await getDocs(col);
+    if (!existing.empty) return 0;
+  }
 
   const products = generateCatalog(count);
   const CHUNK = 450;
@@ -77,4 +79,17 @@ export async function seedProducts(count = 1000): Promise<number> {
     await batch.commit();
   }
   return products.length;
+}
+
+/** Delete every product (admin reset). Batched because of the 500-op limit. */
+export async function clearAllProducts(): Promise<number> {
+  const snap = await getDocs(col);
+  const docs = snap.docs;
+  const CHUNK = 450;
+  for (let i = 0; i < docs.length; i += CHUNK) {
+    const batch = writeBatch(db);
+    for (const d of docs.slice(i, i + CHUNK)) batch.delete(d.ref);
+    await batch.commit();
+  }
+  return docs.length;
 }
