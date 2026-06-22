@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Search } from "lucide-react";
 import { useProducts } from "@/hooks/use-products";
+import { useReviews } from "@/hooks/use-reviews";
 import { useI18n } from "@/i18n/provider";
 import { ProductCard } from "./product-card";
 import { Skeleton } from "@/common/components/ui/skeleton";
@@ -15,6 +16,7 @@ const PAGE_SIZE = 24;
 
 export function Storefront() {
   const { products, loading, error } = useProducts();
+  const { ratings } = useReviews();
   const { t } = useI18n();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<string>("__all__");
@@ -99,7 +101,7 @@ export function Storefront() {
           </div>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
             {paged.map((p, i) => (
-              <ProductCard key={p.id} product={p} index={i % PAGE_SIZE} />
+              <ProductCard key={p.id} product={p} index={i % PAGE_SIZE} rating={ratings[p.id]} />
             ))}
           </div>
           {shown < visible.length && (

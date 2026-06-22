@@ -9,13 +9,15 @@ import { Card } from "@/common/components/ui/card";
 import { Badge } from "@/common/components/ui/badge";
 import { Button } from "@/common/components/ui/button";
 import { QtyStepper } from "@/common/components/ui/qty-stepper";
+import { StarRating } from "@/common/components/ui/star-rating";
 import { useCart } from "@/contexts/cart-context";
 import { useI18n } from "@/i18n/provider";
 import { deriveStatus } from "@/services/metrics";
 import { formatRupiah } from "@/common/libs/utils";
 import { imageSources, itemEmoji } from "@/common/libs/product-image";
+import type { RatingSummary } from "@/common/types";
 
-export function ProductCard({ product, index = 0 }: { product: Product; index?: number }) {
+export function ProductCard({ product, index = 0, rating }: { product: Product; index?: number; rating?: RatingSummary }) {
   const { add } = useCart();
   const { t } = useI18n();
   const [qty, setQty] = useState(1);
@@ -62,7 +64,14 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
         <h3 className="text-sm font-semibold leading-snug">{product.name}</h3>
         <Badge tone={status.tone} className="shrink-0">{t(`status.${status.key}`)}</Badge>
       </div>
-      <p className="text-xs text-faint">{product.category}</p>
+      <div className="flex items-center gap-1.5">
+        <p className="text-xs text-faint">{product.category}</p>
+        {rating && rating.count > 0 && (
+          <span className="inline-flex items-center gap-1 text-xs text-faint">
+            · <StarRating value={rating.average} size={12} /> {rating.average.toFixed(1)}
+          </span>
+        )}
+      </div>
 
       <div className="mt-3 flex items-baseline justify-between">
         <span className="text-lg font-extrabold tracking-tight">{formatRupiah(product.price)}</span>

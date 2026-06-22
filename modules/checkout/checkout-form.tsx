@@ -10,6 +10,7 @@ import { createOrder } from "@/services/orders";
 import { Card } from "@/common/components/ui/card";
 import { Button } from "@/common/components/ui/button";
 import { Input } from "@/common/components/ui/input";
+import { PostPurchaseReview } from "@/modules/reviews/post-purchase-review";
 import { cn, formatRupiah } from "@/common/libs/utils";
 
 export function CheckoutForm() {
@@ -19,6 +20,7 @@ export function CheckoutForm() {
   const [method, setMethod] = useState("qris");
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState<string | null>(null);
+  const [purchased, setPurchased] = useState<{ productId: string; name: string }[]>([]);
 
   const METHODS = [
     { id: "qris", label: t("checkout.qris"), emoji: "📱" },
@@ -31,6 +33,7 @@ export function CheckoutForm() {
     setSubmitting(true);
     try {
       const id = await createOrder({ items, buyerName: name, paymentMethod: method });
+      setPurchased(items.map((i) => ({ productId: i.productId, name: i.name })));
       clear();
       setDone(id);
       toast.success(t("checkout.paySuccess"), { description: t("checkout.paySuccessDesc") });
@@ -43,12 +46,15 @@ export function CheckoutForm() {
 
   if (done) {
     return (
-      <Card className="mx-auto max-w-md p-10 text-center">
+      <Card className="mx-auto max-w-lg p-8 text-center sm:p-10">
         <CheckCircle2 className="mx-auto mb-3 h-12 w-12 text-safe" />
         <h2 className="mb-1 text-xl font-bold">{t("checkout.done")}</h2>
         <p className="mb-1 text-sm text-muted">{t("checkout.orderNo")}</p>
         <p className="mb-5 font-mono text-sm font-semibold">{done}</p>
-        <Link href="/"><Button>{t("checkout.back")}</Button></Link>
+        {purchased.length > 0 && <PostPurchaseReview items={purchased} buyerName={name} />}
+        <div className="mt-6">
+          <Link href="/"><Button>{t("checkout.back")}</Button></Link>
+        </div>
       </Card>
     );
   }

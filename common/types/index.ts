@@ -54,3 +54,22 @@ export interface Order {
   paymentMethod: string;
   createdAt: number;
 }
+
+export type ReviewType = "ulasan" | "komplain";
+
+export interface Review {
+  id: string;
+  productId: string;
+  productName: string;
+  rating: number; // 1..5
+  comment: string;
+  type: ReviewType;
+  buyerName: string;
+  createdAt: number;
+}
+
+/** Aggregated rating for a product (computed from reviews). */
+export interface RatingSummary {
+  average: number;
+  count: number;
+}

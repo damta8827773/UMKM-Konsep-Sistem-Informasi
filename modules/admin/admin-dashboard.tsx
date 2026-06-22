@@ -9,6 +9,7 @@ import { signOut } from "@/services/firebase/auth";
 import { AdminKpis } from "./admin-kpis";
 import { InventoryTable } from "./inventory-table";
 import { OrdersTable } from "./orders-table";
+import { ReviewsPanel } from "./reviews-panel";
 import { TurnoverChart } from "./turnover-chart";
 import { SupplierDonut } from "./supplier-donut";
 import { Button } from "@/common/components/ui/button";
@@ -47,6 +48,7 @@ export function AdminDashboard() {
         </div>
         <div className="flex flex-col gap-6">
           <OrdersTable orders={orders} />
+          <ReviewsPanel />
           <SupplierDonut products={products} />
         </div>
       </div>

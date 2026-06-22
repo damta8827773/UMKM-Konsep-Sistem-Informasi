@@ -118,5 +118,10 @@ In the [Firebase Console](https://console.firebase.google.com) for your project:
 
 ---
 
+## 📚 Dokumentasi (Tugas Sistem Informasi)
+Analisis & perancangan lengkap (SDLC + Audit SI) ada di folder [`docs/`](./docs):
+Investigasi · Analisis (Rich Picture, SWOT, PIECES, Fishbone) · Perancangan (Flowchart,
+ERD) · Implementasi · Audit SI (COSO, COBIT, ISO).
+
 ## 📄 License
 MIT © Damta Noviyan Muhamad Faiz
