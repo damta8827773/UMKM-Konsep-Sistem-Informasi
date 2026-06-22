@@ -22,36 +22,26 @@ export function itemEmoji(name?: string, fallback = "📦"): string {
   return fallback;
 }
 
-// Curated REAL photos (Unsplash CDN) for common items. If an URL fails, the UI
-// cascades to the category image, then the emoji tile — so it never breaks.
-const u = (id: string) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=400&h=400&q=70`;
-const ITEM_PHOTO: [RegExp, string][] = [
-  [/beras/i, u("1586201375761-83865001e31c")],
-  [/kopi/i, u("1447933601403-0c6688de566e")],
-  [/telur/i, u("1582722872445-44dc5f7e3c8f")],
-  [/cokelat|coklat/i, u("1511381939415-e44015466834")],
-  [/biskuit/i, u("1499636136210-6f4ee915583e")],
-  [/kacang/i, u("1567892737950-30c4db37cd89")],
-  [/teh/i, u("1564890369478-c89ca6d9cde9")],
-  [/susu/i, u("1563636619-e9143da7973b")],
-  [/keripik/i, u("1566478989037-eec170784d0b")],
-];
-
-function itemPhoto(name?: string): string {
-  const n = (name ?? "").toLowerCase();
-  for (const [re, url] of ITEM_PHOTO) if (re.test(n)) return url;
-  return "";
+// Real photo by web image search (Bing thumbnail CDN), keyed on the FULL product
+// name (item + brand + weight) → shows an actual product photo, e.g. a rice sack.
+// Hotlink-friendly for <img>; if it fails the UI cascades to the category image.
+// NOTE: search-sourced images are for the PROTOTYPE only — use licensed photos in
+// production (or set a per-product `image` URL).
+function searchPhoto(name?: string): string {
+  if (!name || !name.trim()) return "";
+  const q = encodeURIComponent(`${name} produk kemasan`);
+  return `https://tse1.mm.bing.net/th?q=${q}&w=400&h=400&c=7&rs=1&p=0&dpr=1&mkt=id-ID`;
 }
 
 /**
- * Ordered list of image candidates for a product. The card tries them in turn
- * and falls back to the emoji tile if all fail:
- *   admin URL → curated item photo → category image
+ * Ordered image candidates for a product. The card tries them in turn and falls
+ * back to the emoji tile if all fail:
+ *   admin URL → web-search product photo → category image
  */
 export function imageSources(p: Partial<Pick<Product, "image" | "category" | "name">>): string[] {
   return [
     p?.image && p.image.trim() ? p.image.trim() : "",
-    itemPhoto(p?.name),
+    searchPhoto(p?.name),
     categoryImage(p?.category),
   ].filter(Boolean);
 }
