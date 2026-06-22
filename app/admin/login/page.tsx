@@ -1,9 +1,5 @@
-import { LoginCard } from "@/modules/auth/login-card";
+import { redirect } from "next/navigation";
 
-export default function AdminLoginPage() {
-  return (
-    <div className="py-10">
-      <LoginCard />
-    </div>
-  );
+export default function AdminLoginMoved() {
+  redirect("/");
 }

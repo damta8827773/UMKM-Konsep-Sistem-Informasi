@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
 import type { Product } from "@/common/types";
@@ -12,16 +13,16 @@ import { useCart } from "@/contexts/cart-context";
 import { useI18n } from "@/i18n/provider";
 import { deriveStatus } from "@/services/metrics";
 import { formatRupiah } from "@/common/libs/utils";
-import { productImage, itemEmoji } from "@/common/libs/product-image";
+import { imageSources, itemEmoji } from "@/common/libs/product-image";
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({ product, index = 0 }: { product: Product; index?: number }) {
   const { add } = useCart();
   const { t } = useI18n();
   const [qty, setQty] = useState(1);
-  const [imgError, setImgError] = useState(false);
+  const [srcIdx, setSrcIdx] = useState(0); // cascade through image candidates
   const status = deriveStatus(product.stock, product.reorderPoint);
   const soldOut = product.stock === 0;
-  const photo = productImage(product); // real photo URL only if admin set one
+  const sources = imageSources(product);
   const icon = itemEmoji(product.name, product.emoji); // always matches the item
 
   function handleAdd() {
@@ -31,19 +32,26 @@ export function ProductCard({ product }: { product: Product }) {
   }
 
   return (
-    <Card className="flex flex-col p-4 animate-fade-up">
+    <motion.div
+      initial={{ opacity: 0, y: 14 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, delay: Math.min(index * 0.025, 0.4), ease: "easeOut" }}
+      whileHover={{ y: -4 }}
+      className="h-full"
+    >
+    <Card className="flex h-full flex-col p-4">
       <div className="relative mb-3 h-32 overflow-hidden rounded-lg">
-        {photo && !imgError ? (
+        {srcIdx < sources.length ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={photo}
+            src={sources[srcIdx]}
             alt={product.name}
             loading="lazy"
-            onError={() => setImgError(true)}
+            onError={() => setSrcIdx((i) => i + 1)}
             className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
           />
         ) : (
-          // Clean designed tile — emoji always matches the product name.
+          // Final fallback — emoji tile that always matches the product name.
           <div className="grid h-full place-items-center bg-gradient-to-br from-surface-2 to-brand-soft/50">
             <span className="text-6xl drop-shadow-sm">{icon}</span>
           </div>
@@ -73,5 +81,6 @@ export function ProductCard({ product }: { product: Product }) {
         </Button>
       </div>
     </Card>
+    </motion.div>
   );
 }

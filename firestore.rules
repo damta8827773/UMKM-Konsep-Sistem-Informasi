@@ -10,10 +10,11 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // Daftar email admin — samakan dengan NEXT_PUBLIC_ADMIN_EMAILS di .env.local
     function isAdmin() {
       return request.auth != null
-        && request.auth.token.email == 'damtafaiz@gmail.com'
-        && request.auth.token.email_verified == true;
+        && request.auth.token.email_verified == true
+        && request.auth.token.email in ['damtafaiz@gmail.com', 'rdwnfakhrii20@gmail.com'];
     }
 
     // Products: anyone can browse the storefront; only admin mutates stock.

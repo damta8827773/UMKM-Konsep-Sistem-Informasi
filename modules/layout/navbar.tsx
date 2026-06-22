@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ShoppingCart, Store, LayoutDashboard } from "lucide-react";
+import { ShoppingCart, Store } from "lucide-react";
 import { useCart } from "@/contexts/cart-context";
-import { useAuth } from "@/contexts/auth-context";
 import { useI18n } from "@/i18n/provider";
 import { ThemeToggle } from "./theme-toggle";
 import { LanguageSwitcher } from "./language-switcher";
@@ -13,19 +12,15 @@ import { cn } from "@/common/libs/utils";
 
 export function Navbar() {
   const { count } = useCart();
-  const { isAdmin } = useAuth();
   const { t } = useI18n();
   const pathname = usePathname();
 
-  // Storefront-first navbar: the Admin link only appears once signed in as admin.
-  // For everyone else the top nav stays clean; admin login lives in the footer.
-  const links = [
-    { href: "/", label: t("nav.store"), icon: Store },
-    ...(isAdmin ? [{ href: "/admin", label: t("nav.admin"), icon: LayoutDashboard }] : []),
-  ];
+  // Storefront-first navbar — buyer only. Admin access lives in the footer, never
+  // in the top nav (even when signed in as admin).
+  const links = [{ href: "/", label: t("nav.store"), icon: Store }];
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-surface/85 backdrop-blur supports-[backdrop-filter]:bg-surface/70">
+    <header className="sticky top-0 z-40 border-b border-border bg-surface shadow-sm">
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
         <Link href="/" className="flex items-center gap-2.5">
           <BrandLogo className="h-9 w-9 rounded-[10px] shadow-lg shadow-brand/30" />

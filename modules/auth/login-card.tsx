@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { GoogleLogo } from "@/common/components/google-logo";
 import { useAuth } from "@/contexts/auth-context";
 import { useI18n } from "@/i18n/provider";
-import { signInWithGoogle, signOut, ADMIN_EMAIL } from "@/services/firebase/auth";
+import { signInWithGoogle, signOut, ADMIN_EMAILS_LABEL } from "@/services/firebase/auth";
 import { isFirebaseConfigured } from "@/services/firebase/client";
 import { Card } from "@/common/components/ui/card";
 import { Button } from "@/common/components/ui/button";
@@ -41,7 +41,7 @@ export function LoginCard() {
         <p className="mb-1 text-sm text-muted">
           {t("auth.account")} <span className="font-semibold text-text">{user.email}</span> {t("auth.notAllowed")}
         </p>
-        <p className="mb-5 text-xs text-faint">{t("auth.onlyAllowed", { email: ADMIN_EMAIL })}</p>
+        <p className="mb-5 text-xs text-faint">{t("auth.onlyAllowed", { email: ADMIN_EMAILS_LABEL })}</p>
         <Button variant="outline" onClick={() => signOut()}>
           <LogOut className="h-4 w-4" /> {t("auth.signOutSwitch")}
         </Button>

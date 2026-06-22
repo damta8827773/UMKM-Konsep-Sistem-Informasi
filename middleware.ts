@@ -10,5 +10,5 @@ export function middleware(_req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/panel-d4mt4-2026/:path*"],
 };

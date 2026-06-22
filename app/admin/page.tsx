@@ -1,10 +1,6 @@
-import { AdminGuard } from "@/modules/auth/admin-guard";
-import { AdminDashboard } from "@/modules/admin/admin-dashboard";
+import { redirect } from "next/navigation";
 
-export default function AdminPage() {
-  return (
-    <AdminGuard>
-      <AdminDashboard />
-    </AdminGuard>
-  );
+// Old public path is retired — admin now lives at an obscure URL.
+export default function AdminMoved() {
+  redirect("/");
 }

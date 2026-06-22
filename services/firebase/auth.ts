@@ -22,9 +22,18 @@ export function watchAuth(cb: (user: User | null) => void) {
   return onAuthStateChanged(auth, cb);
 }
 
-export const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL ?? "damtafaiz@gmail.com";
+// Daftar email admin. Tambah/ubah di .env.local → NEXT_PUBLIC_ADMIN_EMAILS
+// (pisah dengan koma). Firestore Rules juga harus disamakan (firestore.rules).
+const DEFAULT_ADMINS = "damtafaiz@gmail.com,rdwnfakhrii20@gmail.com";
+export const ADMIN_EMAILS = (process.env.NEXT_PUBLIC_ADMIN_EMAILS ?? DEFAULT_ADMINS)
+  .split(",")
+  .map((e) => e.trim().toLowerCase())
+  .filter(Boolean);
+
+/** Teks untuk ditampilkan ("a@x.com atau b@y.com"). */
+export const ADMIN_EMAILS_LABEL = ADMIN_EMAILS.join(" atau ");
 
 /** Client-side convenience check (UX only — Firestore Rules are authoritative). */
 export function isAdminUser(user: User | null): boolean {
-  return !!user && user.email === ADMIN_EMAIL && user.emailVerified;
+  return !!user && !!user.email && ADMIN_EMAILS.includes(user.email.toLowerCase()) && user.emailVerified;
 }

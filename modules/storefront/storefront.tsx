@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { motion } from "framer-motion";
 import { Search } from "lucide-react";
 import { useProducts } from "@/hooks/use-products";
 import { useI18n } from "@/i18n/provider";
@@ -42,10 +43,18 @@ export function Storefront() {
 
   return (
     <div>
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold tracking-tight sm:text-[28px]">{t("store.title")}</h1>
-        <p className="mt-1 text-sm text-muted">{t("store.subtitle")}</p>
-      </div>
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="mb-6 overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-brand-soft via-surface to-surface p-6 sm:p-8"
+      >
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-surface px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-brand shadow-card">
+          Katalog UMKM · 1000+ produk
+        </span>
+        <h1 className="mt-3 text-2xl font-extrabold tracking-tight sm:text-[32px]">{t("store.title")}</h1>
+        <p className="mt-1.5 max-w-xl text-sm text-muted">{t("store.subtitle")}</p>
+      </motion.div>
 
       <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2 rounded-lg border border-border bg-surface px-3 py-2 sm:w-72">
@@ -89,8 +98,8 @@ export function Storefront() {
             {t("store.showing", { shown: String(paged.length), total: String(visible.length) })}
           </div>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-            {paged.map((p) => (
-              <ProductCard key={p.id} product={p} />
+            {paged.map((p, i) => (
+              <ProductCard key={p.id} product={p} index={i % PAGE_SIZE} />
             ))}
           </div>
           {shown < visible.length && (

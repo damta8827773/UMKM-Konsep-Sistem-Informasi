@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { Wallet, PackageX, ShoppingBag, Coins } from "lucide-react";
 import type { Order, Product } from "@/common/types";
 import { computeKpis } from "@/services/metrics";
@@ -22,11 +23,19 @@ export function AdminKpis({ products, orders }: { products: Product[]; orders: O
   return (
     <section className="grid grid-cols-2 gap-4 lg:grid-cols-4">
       {tiles.map((t, i) => (
-        <Card key={i} className="p-5 animate-fade-up">
-          <div className={`mb-3 grid h-10 w-10 place-items-center rounded-[11px] ${t.cls}`}>{t.icon}</div>
-          <div className="text-2xl font-extrabold tracking-tight sm:text-3xl">{t.value}</div>
-          <div className="mt-1.5 text-[13px] font-medium text-muted">{t.label}</div>
-        </Card>
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, delay: i * 0.06, ease: "easeOut" }}
+          whileHover={{ y: -3 }}
+        >
+          <Card className="p-5">
+            <div className={`mb-3 grid h-10 w-10 place-items-center rounded-[11px] ${t.cls}`}>{t.icon}</div>
+            <div className="text-2xl font-extrabold tracking-tight sm:text-3xl">{t.value}</div>
+            <div className="mt-1.5 text-[13px] font-medium text-muted">{t.label}</div>
+          </Card>
+        </motion.div>
       ))}
     </section>
   );

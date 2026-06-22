@@ -38,9 +38,11 @@ export function InventoryTable({ products }: { products: Product[] }) {
   }
 
   async function handleSeed() {
+    // Replace (not append) → always exactly 1000 unique products, never piles up.
+    if (products.length > 0 && !window.confirm(t("admin.seedConfirm"))) return;
     setSeeding(true);
     try {
-      // append:true → "Tambah semua" works even when products already exist.
+      await clearAllProducts();
       const n = await seedProducts(1000, { append: true });
       toast.success(`${n} ${t("admin.seedDone")}`);
     } catch (e) {
