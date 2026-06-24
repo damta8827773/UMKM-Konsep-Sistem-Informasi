@@ -35,7 +35,7 @@ const en: Messages = {
   },
   checkout: {
     title: "Checkout",
-    dummyWarn: "This payment is a DUMMY for the prototype — no real money is involved.",
+    dummyWarn: "This payment is a DUMMY for the prototype - no real money is involved.",
     buyerData: "Buyer Details",
     name: "Name",
     namePlaceholder: "Your name (optional)",
@@ -95,7 +95,7 @@ const en: Messages = {
     adjustStock: "Adjust Stock",
     delete: "Delete",
     noProducts: "No products yet.",
-    rowCap: "Showing {shown} of {total} — use search to filter.",
+    rowCap: "Showing {shown} of {total} - use search to filter.",
     ordersTitle: "Incoming Orders",
     ordersDesc: "Process an order to deduct stock automatically",
     noOrders: "No orders yet.",

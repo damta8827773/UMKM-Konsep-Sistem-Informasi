@@ -2,7 +2,7 @@ import type { Order, Product, StockStatus } from "@/common/types";
 
 const EXPIRY_NA = null; // expiry tracking is admin-managed; omitted from this MVP slice
 
-/** Single source of truth for stock status — derived, never stored. */
+/** Single source of truth for stock status - derived, never stored. */
 export function deriveStatus(stock: number, reorderPoint: number): StockStatus {
   if (stock === 0) return { key: "kosong", label: "Kosong", tone: "red", rank: 0 };
   if (stock <= reorderPoint) return { key: "restock", label: "Perlu Restock", tone: "amber", rank: 1 };

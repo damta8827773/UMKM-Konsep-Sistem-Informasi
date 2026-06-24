@@ -61,7 +61,7 @@ export async function addProduct(p: Omit<Product, "id">) {
 }
 
 /**
- * One-click seed of the UMKM catalog (admin only — Firestore Rules enforce it).
+ * One-click seed of the UMKM catalog (admin only - Firestore Rules enforce it).
  * Writes in chunks because a Firestore batch is capped at 500 ops.
  * No-op if products already exist.
  */

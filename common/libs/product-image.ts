@@ -25,7 +25,7 @@ export function itemEmoji(name?: string, fallback = "📦"): string {
 // Real photo by web image search (Bing thumbnail CDN), keyed on the FULL product
 // name (item + brand + weight) → shows an actual product photo, e.g. a rice sack.
 // Hotlink-friendly for <img>; if it fails the UI cascades to the category image.
-// NOTE: search-sourced images are for the PROTOTYPE only — use licensed photos in
+// NOTE: search-sourced images are for the PROTOTYPE only - use licensed photos in
 // production (or set a per-product `image` URL).
 function searchPhoto(name?: string): string {
   if (!name || !name.trim()) return "";

@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Design tokens. The only stylesheet in the project — all component styling is
+/* Design tokens. The only stylesheet in the project - all component styling is
    done with Tailwind utility classes in .tsx files. */
 @layer base {
   :root {

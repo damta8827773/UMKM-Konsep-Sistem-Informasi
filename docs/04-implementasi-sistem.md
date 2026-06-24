@@ -7,7 +7,7 @@
 
 ## 4.b. Studi Kasus: Transaksi di "Warung Bu Sari"
 
-### Skenario 1 — Pembeli belanja & memberi ulasan
+### Skenario 1 - Pembeli belanja & memberi ulasan
 1. Pembeli membuka storefront, mencari **"Indomie Goreng"**, mengatur jumlah **3**, lalu
    **Tambah ke keranjang**.
 2. Di keranjang menekan **Checkout**, mengisi nama **"Andi"**, memilih **QRIS**, menekan
@@ -16,13 +16,13 @@
 4. Di layar sukses, Andi memberi **⭐⭐⭐⭐⭐** dan komentar "cepat & rapi" → tersimpan
    sebagai **review** (`type: ulasan`).
 
-### Skenario 2 — Admin memproses pesanan
+### Skenario 2 - Admin memproses pesanan
 1. Admin login di URL admin (ter-allowlist email) → membuka **Dashboard**.
 2. Pada **Pesanan Masuk**, menekan **Proses (kurangi stok)** untuk order Andi.
 3. Stok Indomie berkurang **3**, order menjadi `status: selesai`, KPI **Pendapatan**
    bertambah.
 
-### Skenario 3 — Komplain pelanggan
+### Skenario 3 - Komplain pelanggan
 1. Pembeli lain memilih tab **Komplain**, memberi ⭐⭐ dan menulis "kemasan penyok".
 2. Admin melihatnya **real-time** di panel **Ulasan & Komplain** (badge merah "komplain").
 

@@ -1,4 +1,4 @@
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 //  📸  FOTO PRODUK PER KATEGORI  (file lokal di /assets/img)
 //
 //  Ganti path di bawah dengan foto ASLI milikmu:
@@ -10,7 +10,7 @@
 //
 //  Default menunjuk ke placeholder .svg berdesain. Jika file tidak ada / gagal
 //  dimuat, kartu produk otomatis menampilkan ikon yang cocok dengan namanya.
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 export const CATEGORY_IMAGE: Record<string, string> = {
   Sembako: "/assets/img/sembako.svg",
   "Makanan Instan": "/assets/img/makanan-instan.svg",

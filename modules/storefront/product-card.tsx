@@ -53,7 +53,7 @@ export function ProductCard({ product, index = 0, rating }: { product: Product; 
             className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
           />
         ) : (
-          // Final fallback — emoji tile that always matches the product name.
+          // Final fallback - emoji tile that always matches the product name.
           <div className="grid h-full place-items-center bg-gradient-to-br from-surface-2 to-brand-soft/50">
             <span className="text-6xl drop-shadow-sm">{icon}</span>
           </div>

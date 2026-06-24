@@ -1,16 +1,16 @@
 rules_version = '2';
 
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 //  THE REAL SECURITY BOUNDARY.
-//  Client-side checks are only for UX — these rules are what
+//  Client-side checks are only for UX - these rules are what
 //  actually stop anyone who is not the admin from writing data.
 //
 //  Deploy:  firebase deploy --only firestore:rules
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Daftar email admin — samakan dengan NEXT_PUBLIC_ADMIN_EMAILS di .env.local
+    // Daftar email admin - samakan dengan NEXT_PUBLIC_ADMIN_EMAILS di .env.local
     function isAdmin() {
       return request.auth != null
         && request.auth.token.email_verified == true
@@ -33,7 +33,7 @@ service cloud.firestore {
       allow read, update, delete: if isAdmin();
     }
 
-    // Reviews & complaints: a buyer may CREATE one (validated 1–5 stars);
+    // Reviews & complaints: a buyer may CREATE one (validated 1-5 stars);
     // everyone can read (storefront ratings); only admin edits/deletes.
     match /reviews/{reviewId} {
       allow create: if request.resource.data.keys().hasAll(['productId', 'productName', 'rating', 'comment', 'type', 'createdAt'])

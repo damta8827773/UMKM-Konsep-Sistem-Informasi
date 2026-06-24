@@ -5,7 +5,7 @@ node_modules/
 .next/
 out/
 
-# env — NEVER commit real keys
+# env - NEVER commit real keys
 .env
 .env.local
 .env*.local
@@ -19,5 +19,5 @@ out/
 npm-debug.log*
 next-env.d.ts
 
-# local agent notes — keep out of the repo
+# local agent notes - keep out of the repo
 CLAUDE.md

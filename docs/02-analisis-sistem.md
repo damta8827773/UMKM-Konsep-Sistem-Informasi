@@ -1,6 +1,6 @@
 # 2. Tahap Analisis Sistem
 
-## 2.a. Sistem Berjalan (Rich Picture — kondisi manual)
+## 2.a. Sistem Berjalan (Rich Picture - kondisi manual)
 
 ```mermaid
 flowchart LR
@@ -37,7 +37,7 @@ restock berbasis perkiraan, dan komplain pelanggan tidak terekam.
 | **E**fficiency | Catat ganda manual | Input sekali, dipakai semua laporan |
 | **S**ervice | Komplain lisan hilang | Kanal ulasan & komplain terekam |
 
-### Fishbone (Ishikawa) — Sebab "Stok Tidak Akurat"
+### Fishbone (Ishikawa) - Sebab "Stok Tidak Akurat"
 ```mermaid
 flowchart LR
     M1[Manusia: lupa update saat ramai] --> E
@@ -47,7 +47,7 @@ flowchart LR
     E[("🎯 Akibat: Stok Tidak Akurat")]
 ```
 
-## 2.c. Kebutuhan Sistem Baru (Rich Picture — usulan)
+## 2.c. Kebutuhan Sistem Baru (Rich Picture - usulan)
 
 ```mermaid
 flowchart LR

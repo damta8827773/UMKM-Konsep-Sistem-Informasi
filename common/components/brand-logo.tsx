@@ -1,4 +1,4 @@
-/** Warung Analytics brand mark — a shopping bag + mini bar chart (store + analytics). */
+/** Warung Analytics brand mark - a shopping bag + mini bar chart (store + analytics). */
 export function BrandLogo({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 40 40" className={className} role="img" aria-label="Warung Analytics">

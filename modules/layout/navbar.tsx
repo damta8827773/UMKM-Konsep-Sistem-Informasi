@@ -15,7 +15,7 @@ export function Navbar() {
   const { t } = useI18n();
   const pathname = usePathname();
 
-  // Storefront-first navbar — buyer only. Admin access lives in the footer, never
+  // Storefront-first navbar - buyer only. Admin access lives in the footer, never
   // in the top nav (even when signed in as admin).
   const links = [{ href: "/", label: t("nav.store"), icon: Store }];
 

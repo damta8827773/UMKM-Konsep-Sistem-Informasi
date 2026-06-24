@@ -1,5 +1,5 @@
 // Bahasa Indonesia (default). Shape of this object is the source of truth for
-// every other language file — keep keys identical across languages.
+// every other language file - keep keys identical across languages.
 const id = {
   nav: { store: "Toko", admin: "Admin", cart: "Keranjang" },
   store: {
@@ -34,7 +34,7 @@ const id = {
   },
   checkout: {
     title: "Checkout",
-    dummyWarn: "Pembayaran ini DUMMY untuk prototype — tidak ada transaksi uang sungguhan.",
+    dummyWarn: "Pembayaran ini DUMMY untuk prototype - tidak ada transaksi uang sungguhan.",
     buyerData: "Data Pembeli",
     name: "Nama",
     namePlaceholder: "Nama kamu (opsional)",
@@ -94,7 +94,7 @@ const id = {
     adjustStock: "Atur Stok",
     delete: "Hapus",
     noProducts: "Belum ada produk.",
-    rowCap: "Menampilkan {shown} dari {total} — gunakan pencarian untuk menyaring.",
+    rowCap: "Menampilkan {shown} dari {total} - gunakan pencarian untuk menyaring.",
     ordersTitle: "Pesanan Masuk",
     ordersDesc: "Proses pesanan untuk mengurangi stok otomatis",
     noOrders: "Belum ada pesanan.",

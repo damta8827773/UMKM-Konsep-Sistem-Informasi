@@ -2,7 +2,7 @@ import { getApp, getApps, initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-// Config comes ONLY from env — no keys are hardcoded in source.
+// Config comes ONLY from env - no keys are hardcoded in source.
 // (NEXT_PUBLIC_ Firebase values are safe to ship to the client; security is
 //  enforced by Firestore Rules, not by hiding them.)
 const env = {

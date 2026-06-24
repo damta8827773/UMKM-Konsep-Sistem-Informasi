@@ -9,11 +9,11 @@ apakah sistem informasi telah:
 - **menggunakan sumber daya secara efisien**.
 
 ## 5.2. Tujuan Audit Sistem Informasi
-1. **Availability** — sistem tersedia saat dibutuhkan (storefront & dashboard online).
-2. **Confidentiality** — data sensitif (pesanan) hanya diakses pihak berwenang.
-3. **Integrity** — data stok/pesanan akurat dan tidak diubah pihak tak sah.
-4. **Effectiveness & Efficiency** — sistem mendukung tujuan UMKM dengan sumber daya minimal.
-5. **Compliance** — sesuai kebijakan & aturan yang berlaku.
+1. **Availability** - sistem tersedia saat dibutuhkan (storefront & dashboard online).
+2. **Confidentiality** - data sensitif (pesanan) hanya diakses pihak berwenang.
+3. **Integrity** - data stok/pesanan akurat dan tidak diubah pihak tak sah.
+4. **Effectiveness & Efficiency** - sistem mendukung tujuan UMKM dengan sumber daya minimal.
+5. **Compliance** - sesuai kebijakan & aturan yang berlaku.
 
 ## 5.3. Proses Audit Sistem Informasi
 
@@ -27,7 +27,7 @@ apakah sistem informasi telah:
 
 ### b) Berbasis Kendali (Control-Based)
 Mengacu kerangka pengendalian mutu/keamanan:
-- **ISO 9001:2000 (PWFS — Process, Work Flow, Standard):** prosedur baku (mis. alur proses
+- **ISO 9001:2000 (PWFS - Process, Work Flow, Standard):** prosedur baku (mis. alur proses
   pesanan & restock terdokumentasi pada [Perancangan](./03-perancangan-sistem.md)).
 
 ### c) Berbasis Komputer (Computer-Based / Frameworks)
@@ -49,7 +49,7 @@ Mengacu kerangka pengendalian mutu/keamanan:
 >
 > **Jawaban:** Pelanggaran **Integrity** & **Confidentiality** (akses tidak sah).
 > Kontrol: terapkan **Firestore Security Rules** `allow write: if isAdmin()` dan
-> **allowlist email** — sehingga hanya admin terverifikasi yang dapat menulis data
+> **allowlist email** - sehingga hanya admin terverifikasi yang dapat menulis data
 > (kontrol berbasis akses, sesuai COBIT & ISO 27002).
 
 ### Checklist Audit (ringkas)
@@ -57,4 +57,4 @@ Mengacu kerangka pengendalian mutu/keamanan:
 - [x] Otorisasi tertulis di Firestore Rules (bukan hanya UI)
 - [x] Kredensial tidak ter-commit (`.env.local` di-ignore)
 - [x] Transport aman (HTTPS)
-- [x] Validasi input (rating 1–5, status order, total ≥ 0) di Rules
+- [x] Validasi input (rating 1-5, status order, total ≥ 0) di Rules

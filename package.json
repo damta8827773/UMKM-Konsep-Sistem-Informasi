@@ -2,7 +2,7 @@
   "name": "damta-warung",
   "version": "1.0.0",
   "private": true,
-  "description": "Warung Analytics — storefront + admin inventory dashboard (Next.js + Firebase)",
+  "description": "Warung Analytics - storefront + admin inventory dashboard (Next.js + Firebase)",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

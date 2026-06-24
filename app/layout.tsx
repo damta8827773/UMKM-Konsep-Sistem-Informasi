@@ -13,7 +13,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: `${METADATA.title} — ${METADATA.tagline}`,
+  title: `${METADATA.title} - ${METADATA.tagline}`,
   description: METADATA.description,
 };
 

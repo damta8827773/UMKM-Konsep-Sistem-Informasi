@@ -4,7 +4,7 @@
 
 **Storefront + Admin Inventory System for a grocery store ("Warung Kelontong")**
 
-A single full-stack **Next.js 14** app with a **Firebase** backend — a public buyer
+A single full-stack **Next.js 14** app with a **Firebase** backend - a public buyer
 storefront and an email-gated admin dashboard for inventory, orders & analytics.
 
 ![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=nextdotjs)
@@ -19,18 +19,18 @@ storefront and an email-gated admin dashboard for inventory, orders & analytics.
 
 ## ✨ Features
 
-### 🏪 Buyer (storefront — public)
+### 🏪 Buyer (storefront - public)
 - Browse a catalog of up to **1.000 UMKM products** with category-matching icons
 - **Search** + **category filter** + **pagination** (load more)
 - **Quantity stepper**, persistent **cart** (localStorage)
-- **Dummy checkout** (QRIS / transfer / COD) — prototype only, no real money
+- **Dummy checkout** (QRIS / transfer / COD) - prototype only, no real money
 
 ### 🛠️ Admin (email-gated dashboard)
 - Google sign-in restricted to **one allowed email** (everyone else is blocked)
 - **KPI cards** (asset value, revenue, new orders, stockouts) with animated counters
 - **Recharts**: product turnover (fast vs slow) + supplier spend donut
-- **Stock management** — adjust stock ±, delete, **add 1.000 sample products**, clear all
-- **Order processing** — mark an order done → stock deducts automatically
+- **Stock management** - adjust stock ±, delete, **add 1.000 sample products**, clear all
+- **Order processing** - mark an order done → stock deducts automatically
 
 ### 🌐 Platform
 - **Light / dark** theme · **i18n** (Indonesian + English, scalable to 25 locales)
@@ -55,16 +55,16 @@ storefront and an email-gated admin dashboard for inventory, orders & analytics.
 
 ```
 .
-├── app/                  # routes (App Router): storefront, /cart, /checkout, /admin
-├── common/               # UI primitives, libs, types, constants
-├── contexts/             # Auth & Cart providers
-├── hooks/                # useProducts, useOrders
-├── i18n/                 # locale config + provider (t())
-├── messages/             # id.ts (source of truth) + en.ts
-├── modules/              # feature widgets (storefront, cart, checkout, admin, layout, auth)
-├── services/             # firebase client, products, orders, metrics, catalog generator
-├── middleware.ts         # security headers / admin matcher
-└── firestore.rules       # authorization boundary (deploy to Firebase)
+├-- app/                  # routes (App Router): storefront, /cart, /checkout, /admin
+├-- common/               # UI primitives, libs, types, constants
+├-- contexts/             # Auth & Cart providers
+├-- hooks/                # useProducts, useOrders
+├-- i18n/                 # locale config + provider (t())
+├-- messages/             # id.ts (source of truth) + en.ts
+├-- modules/              # feature widgets (storefront, cart, checkout, admin, layout, auth)
+├-- services/             # firebase client, products, orders, metrics, catalog generator
+├-- middleware.ts         # security headers / admin matcher
+└-- firestore.rules       # authorization boundary (deploy to Firebase)
 ```
 
 ---
@@ -100,10 +100,10 @@ In the [Firebase Console](https://console.firebase.google.com) for your project:
 ---
 
 ## 🔐 Security notes
-- **No secrets in source** — all config comes from `.env.local` (gitignored).
+- **No secrets in source** - all config comes from `.env.local` (gitignored).
 - `NEXT_PUBLIC_FIREBASE_*` values are safe to expose; **Firestore Rules** are the real gate.
 - Any **server-only** key (e.g. Gemini) must **not** use the `NEXT_PUBLIC_` prefix.
-- Client-side admin checks are UX only — `firestore.rules` is authoritative.
+- Client-side admin checks are UX only - `firestore.rules` is authoritative.
 
 ---
 

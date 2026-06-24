@@ -33,7 +33,7 @@ export const ADMIN_EMAILS = (process.env.NEXT_PUBLIC_ADMIN_EMAILS ?? DEFAULT_ADM
 /** Teks untuk ditampilkan ("a@x.com atau b@y.com"). */
 export const ADMIN_EMAILS_LABEL = ADMIN_EMAILS.join(" atau ");
 
-/** Client-side convenience check (UX only — Firestore Rules are authoritative). */
+/** Client-side convenience check (UX only - Firestore Rules are authoritative). */
 export function isAdminUser(user: User | null): boolean {
   return !!user && !!user.email && ADMIN_EMAILS.includes(user.email.toLowerCase()) && user.emailVerified;
 }
